@@ -1,6 +1,9 @@
 package com.example;
 
+import com.example.generated.tables.TestTable;
+import com.example.generated.tables.records.TestTableRecord;
 import org.jooq.DSLContext;
+import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
@@ -23,7 +26,8 @@ public class DemoApplication {
     String home() {
         //jooq ready to use
         int rowCount = this.jdbcTemplate.queryForObject("select count(*) from test_table", Integer.class);
-        return "Hello World!: " + rowCount;
+        Result<TestTableRecord> result = jooq.selectFrom(TestTable.TEST_TABLE).fetch();
+        return "Hello World!: " + result.get(0).getTestfield();
     }
 
     public static void main(String[] args) throws Exception {
